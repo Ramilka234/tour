@@ -1,0 +1,557 @@
+{% load  static %}
+{% load widget_tweaks %}
+
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+        <header class="Home_Page" id="1" style="background-image: url({% static 'images/section.jpg' %}); " >
+            <nav class="navbar navbar-expand-lg navbar-light bg-light navgation">
+                <div class="container">
+                    <div class="logo ">
+                        <div><a class="navbar-brand" href="{% url 'Home' %}"> <span>Tr</span>avel</a></div>
+                        <div><button class="navbar-toggler down" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="collapse navbar-collapse links" id="navbarSupportedContent">
+                        <div class="cont_links">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <div>
+                            
+                        </div>
+                        <li class="nav-item ">
+                            <a class="nav-link active" aria-current="page" href="{% url 'Home' %}">Home</a>
+                            <div class="link_home"></div>
+                        </li>
+                        <li class="nav-item sel_about">
+                            <a class="nav-link " href="#2">About</a>
+                            <div class="link_about"></div>
+                        </li>
+                        <li class="nav-item sel_services">
+                            <a class="nav-link" href="#3">Explore</a>
+                            <div class="link_services"></div>
+                        </li>
+                        <li class="nav-item sel_work">
+                            <a class="nav-link" href="#4">Blog</a>
+                            <div class="link_work"></div>
+                        </li>
+                        <li class="nav-item sel_contact">
+                            <a class="nav-link" href="{% if user.is_authenticated %} {% url 'booking_list' user.id %} {% else %}# {% endif %}">Bookings</a>
+                            <div class="link_contact"></div>
+                        </li>
+                        </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+                {% if user.is_authenticated %}
+                <div class="login ">
+                    
+                    <a class="login" href="{% url 'profile' user.username %}"><button type="button" class="btn btn-outline-info">{{user.username}}</button></a>
+                </div>
+            
+                {% else %}
+                <div class="login ">
+                    
+                    <a class="login" href="{% url 'Login' %}"><button type="button" class="btn btn-outline-info">Login </button></a>
+                </div>
+                {% endif %}
+            </nav>
+                    <div class="row  g-0 ">
+                        <div class="col-lg-12 col-sm-6">
+                            <div class="content d-flex justify-content-center vh-100 align-items-center ">
+                                <div class="text text-center ">
+                                    <h1>Travel <br> website <span>design</span></h1>
+                                    <p>Explore The World With Us</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+
+            <!-- form in home page -->
+            <div class="container">
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                       {% if form is None and Fform is None or form is not None %}
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="submit" role="tab" aria-controls="pills-profile" aria-selected="false">Hotels</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link "  id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Flight</button>
+                        </li>
+                        {% else %} 
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="submit" role="tab" aria-controls="pills-profile" aria-selected="false">Hotels</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link  active"  id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Flight</button>
+                        </li>
+                        {% endif %}
+                    </ul>
+                <div class="tab-content" id="pills-tabContent">
+                
+                               {% if form is None %}
+                               {% if Fform is None  %}
+                               <div class="tab-pane fade show active " id="pills-home" action="{% url 'booking' 'rtype'%}" role="tabpanel" aria-labelledby="pills-home-tab">
+                               <div class="tab-pane fade show  active  " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                {% else %}
+                                <div class="tab-pane fade " id="pills-home" action="{% url 'booking' 'rtype'%}" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                {% endif %}
+                               <div class=" row">
+                                <div class="col-lg-12 col-sm-6">
+                                    <form class="form_color p-5"  name ="Hotels" action="{% url 'Home' %}" method="GET">
+                                        <div class="row  gy-2 ">
+                                            <label>Choose Room Type</label>
+                                                <div class="col-lg-3 col-sm-12 d-flex">
+                                                    <select name="rtype" class="form-select" aria-label="Default select example">
+                                                        <option  selected>Room Type</option>
+                                                        <option value="SIG" >single</option>
+                                                        <option value="DOB" >Double</option>
+                                                        <option value="DEX" >Deluxe</option>
+                                                    </select>
+                                                </div>
+                                                {% if profile.vip %} <label style="color:red">U will have 10% off the reservation price</label> {% else %}  {% endif %}
+                                                <div class="col-lg- col-sm-12 d-flex justify-content-center">
+                                                    <button type="submit" name="Hotels"class="btn btn-primary tm-btn-search mt-3">Check Rooms</button>
+                                                </div>
+                                        
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                   
+                               
+                               {% else %}
+                                <div class=" row">
+                                    <div class="col-lg-12 col-sm-6">
+                                        <form class="form_color p-5" name="Hotels" action="{% url 'booking' rtype  %}" method="POST">
+                                            {% csrf_token %}
+                                        
+                                            <div class="row  gy-2 ">
+                                                  <label>Choose Room</label>
+                                                  {% render_field form.Room class="form-select" %}
+                                                  <label>Check In </label>
+                                                  {% render_field form.Rcheck_in  class="form-datetime" type="datetime-local"%}
+                                                  <label>Check Out</label>
+                                                   {% render_field form.Rcheck_out  type="datetime-local" class="form-datetime" %}
+
+                                                   {% if profile.vip %} <label style="color:red">U will have 10% off the reservation price</label> {% else %}  {% endif %}
+                                                    <div class="col-lg- col-sm-12 d-flex justify-content-center">
+                                                        <button type="submit" name="Hotels" class="btn btn-primary tm-btn-search mt-3">Book Room</button>
+                                                    </div>
+                
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            
+
+
+                            
+
+                       
+                        
+                         
+                          {% if Fform is None %}
+                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                            <div class=" row">
+                             <div class="col-lg-12 col-sm-6">
+                                 <form class="form_color p-5" action="{% url 'Home' %}" method="GET">
+                                     
+                                     <div class="row  gy-2 ">
+                                         <label>Choose Destination</label>
+                                             <div class="col-lg-3 col-sm-12 d-flex">
+                                                 <select name="det_from" class="form-select" aria-label="Default select example">
+                                                     <option value="None" selected>Destination From</option>
+                                                     <option value="CAI" >Cairo</option>
+                                                     <option value="SSH" >Sharm El sheikh</option>
+                                                     <option value="HGR" >Hurghada</option>
+                                                     <option value="HBE" >Borg El Arab</option>
+                                                 </select>
+                                             </div>
+                                             <div class="col-lg-3 col-sm-12 d-flex">
+                                                <select name="det_to" class="form-select" aria-label="Default select example">
+                                                    <option value="None" selected>Destination To</option>
+                                                    <option value="CAI" >Cairo</option>
+                                                    <option value="SSH" >Sharm El sheikh</option>
+                                                    <option value="HGR" >Hurghada</option>
+                                                    <option value="HBE" >Borg El Arab</option>
+                                                </select>
+                                            </div>
+                                            {% if profile.vip %} <label style="color:red">U will have 10% off the reservation price</label> {% else %}  {% endif %}
+                                             <div class="col-lg- col-sm-12 d-flex justify-content-center">
+                                                 <button type="submit"  name="Flights" class="btn btn-primary tm-btn-search mt-3">See Flights</button>
+                                             </div>
+         
+                                         </div>
+                                     </div>
+                                 </form>
+                             </div>
+                         </div>
+                        </div>
+                            
+                            {% else %}
+                            <div class="tab-pane fade show active" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                             <div class=" row">
+                                 <div class="col-lg-12 col-sm-6">
+                                     <form class="form_color p-5" name="Flights" action="{% url 'flight' det_from det_to  %}" method="POST">
+                                         {% csrf_token %}
+                                     
+                                         <div class="row  gy-2 ">
+                                             <label >Filghts</label>
+                                             {% render_field Fform.Flight_Info class="form-select" %}
+                                             <label >Tickets</label>
+                                             {% render_field Fform.tickets  class="form-control"%}
+                                              
+                                             {% if profile.vip %} <label style="color:red">U will have 10% off the reservation price</label> {% else %}  {% endif %}
+                                                 <div class="col-lg- col-sm-12 d-flex justify-content-center">
+                                                     <button type="submit" class="btn btn-primary tm-btn-search mt-3">Book Flight</button>
+                                                 </div>
+             
+                                             </div>
+                                         </div>
+                                     </form>
+                                 </div>
+                              </div>
+                            </div> 
+                             {% endif %}
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="About" id="2">
+        <div class="container ">
+            <div class="row mb-5 ">
+                <div class="col-lg-12 col-sm-12">
+                    <div class="text-center ">
+                        <h1 class="hd">About us</h1>
+                        <div class="line1"></div>
+                        <div class="line2"></div>
+                        <div class="line3"></div>
+                    </div>
+                </div>
+            </div>
+                <div class="row g-5 ">
+                    <div class="col-lg-5 col-sm-12 ">
+                        <h1 class="">Flghts Inside Egypt</h1>
+                        <p class="phr_about">Enjoy with us the best trips inside Egypt, book with us now and enjoy offers for tourist trips inside Egypt, spend the best times with us and get the best domestic trip offers, get tourist trips in Egypt at the lowest prices and the best features, get the best discounts when you book domestic tourism offers</p>
+                    </div>
+                    <div class="col-lg-7 col-sm-12 pb-5">
+                        <div class="curous">
+                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{% static 'images/travel1.jpg' %}" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/travel2.png' %}" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/travel3.jpg' %}" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/travel4.webp' %}" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/travel5.jpg' %}" class="d-block w-100" alt="...">
+                            </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+        </div>
+        </section>
+
+
+        <section class="Explore " id="3">        
+            <div class="container p-5">
+                <div class="row mb-5 ">
+                    <div class="col-lg-12 col-sm-12">
+                        <div class="text_under text-center ">
+                            <h1 class="hd">Explore</h1>
+                            <div class="line1"></div>
+                            <div class="line2"></div>
+                            <div class="line3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row  g-5 ">
+                    <div class="col-lg-5 col-sm-12 ">
+                        <div class="text d-flex align-items-center h-100">
+                            <div class="">
+                            <h5>We'll take care of everything : </h5>
+                            <p>You will enjoy spending your time with us by getting high quality services at discounted prices. Look at this video and see some of the trips we take.</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-sm-12">
+                        <div class="video ">
+                            <video src="{% static 'images/This_is_Egypt(720p).mp4' %}" controls class=" w-100 h-100" ></video>
+                        </div>
+                    </div>
+                    <!-- <div class="col-lg-12 col-sm-12 py-5 d-flex justify-content-center">
+                        <div class="clo-lg-3 m-2 text-center">
+                            <div class="card" style="width: 18rem;">
+                                <img class="card-img-top " src="images/travel1.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                  <h5 class="card-title">Card title</h5>
+                                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="clo-lg-3 m-2 text-center">
+                            <div class="card" style="width: 18rem;">
+                                <img class="card-img-top" src="images/travel2.png" alt="Card image cap">
+                                <div class="card-body">
+                                  <h5 class="card-title">Card title</h5>
+                                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="clo-lg-3 m-2 text-center">
+                            <div class="card" style="width: 18rem;">
+                                <img class="card-img-top" src="images/travel3.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                  <h5 class="card-title">Card title</h5>
+                                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="clo-lg-3 m-2 text-center">
+                            <div class="card" style="width: 18rem;">
+                                <img class="card-img-top img-fluid" src="images/travel4.webp" alt="Card image cap">
+                                <div class="card-body">
+                                  <h5 class="card-title">Card title</h5>
+                                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  <a href="#" class="btn btn-primary ">Go somewhere</a>
+                                </div>
+                              </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+
+
+
+        <section class="blog py-3 " id="4">
+            <div class="container">
+                <div class="row mb-5 ">
+                    <div class="col-lg-12 col-sm-12">
+                        <div class="text_under text-center ">
+                            <h1 class="hd">Blog</h1>
+                            <div class="line1"></div>
+                            <div class="line2"></div>
+                            <div class="line3"></div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row row-cols-1 row-cols-md-3 g-2">
+                    <div class="col-lg-4 mt-3 card_action">
+                        <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+                            <img src="{% static 'images/North Coast.jpg' %}" class="card-img-top  " alt="...">
+                            <div class="card-body position-relative mb-5">
+                            <h5>North Coast</h5>
+                            <p class="card-text">Welcome with us on a special trip from the North Coast trips, you can now enjoy stunning views when you book with us hotels in the North Coast.</p>
+                            <h5 class="card-title"><a href="#">Read More</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4  mt-3 card_action">
+                        <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                            <img src="{% static 'images/Ain Sukhna.jpg' %}" class="card-img-top " alt="...">
+                            <div class="card-body position-relative mb-5">
+                            <h5>Ain Sukhna</h5>
+                            <p class="card-text">Book with us now the best Ain Sukhna trips, book with us now and enjoy Ain Sukhna trip offers, get Ain Sukhna Egypt flights at the lowest prices and the best features.</p>
+                            <h5 class="card-title"><a href="#">Read More</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4  mt-3 card_action">
+                        <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                            <img src="{% static 'images/North Coast.jpg' %}" class="card-img-top " alt="...">
+                            <div class="card-body position-relative mb-5">
+                            <h5>North Coast</h5>
+                            <p class="card-text">Welcome with us on a special trip from the North Coast trips, you can now enjoy stunning views when you book with us hotels in the North Coast.</p>
+                            <h5 class="card-title"><a href="#">Read More</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4  mt-3 card_action">
+                        <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                            <img src="{% static 'images/North Coast.jpg' %}" class="card-img-top " alt="...">
+                            <div class="card-body position-relative mb-5">
+                            <h5>North Coast</h5>
+                            <p class="card-text">Welcome with us on a special trip from the North Coast trips, you can now enjoy stunning views when you book with us hotels in the North Coast.</p>
+                            <h5 class="card-title"><a href="#">Read More</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mt-3 card_action">
+                        <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                            <img src="{% static 'images/North Coast.jpg' %}" class="card-img-top " alt="...">
+                            <div class="card-body position-relative mb-5">
+                            <h5>North Coast</h5>
+                            <p class="card-text">Welcome with us on a special trip from the North Coast trips, you can now enjoy stunning views when you book with us hotels in the North Coast.</p>
+                            <h5 class="card-title"><a href="#">Read More</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mt-3 card_action">
+                        <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                            <img src="{% static 'images/North Coast.jpg' %}" class="card-img-top " alt="...">
+                            <div class="card-body position-relative mb-5">
+                            <h5>North Coast</h5>
+                            <p class="card-text">Welcome with us on a special trip from the North Coast trips, you can now enjoy stunning views when you book with us hotels in the North Coast.</p>
+                            <h5 class="card-title"><a href="#">Read More</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        {% comment %} <section class="offer py-5">
+            <div class="container">
+                <div class="row mb-5 ">
+                    <div class="col-lg-12 col-sm-12  ">
+                        <div class="text_under text-center ">
+                            <h1 class="hd">Offers</h1>
+                            <div class="line1"></div>
+                            <div class="line2"></div>
+                            <div class="line3"></div>
+                        </div>
+                        
+                        <div class="row mt-5 g-5">
+                            <div class="col-lg-4 col-sm-12 mt-4 action">
+                                <div class="card  card_offer text-center" style="width: 20rem;">
+                                    <img src="{% static 'images/Alex.jpg' %}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                    <h3 class="card-title">Alexandria</h3>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <h5>Price : <span class="text-decoration-line-through"> 1500 LE </span> 1000 LE </h5>
+                                    <a href="#" class="btn btn-primary mt-2 text-center">Booking</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% comment %} <div class="col-lg-4 col-sm-12  mt-4 action">
+                                <div class="card  card_offer text-center" style="width: 20rem;">
+                                    <img src="{% static 'images/Alex.jpg' %}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                    <h3 class="card-title">Alexandria</h3>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <h5>Price : <span class="text-decoration-line-through"> 1500 LE </span> 1000 LE </h5>
+                                    <a href="#" class="btn btn-primary mt-2 text-center">Booking</a>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                            {% comment %} <div class="col-lg-4 col-sm-12  mt-4 action">
+                                <div class="card  card_offer text-center" style="width: 20rem;">
+                                    <img src="{% static 'images/Alex.jpg' %}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                    <h3 class="card-title">Alexandria</h3>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <h5>Price : <span class="text-decoration-line-through"> 1500 LE </span> 1000 LE </h5>
+                                    <a href="#" class="btn btn-primary mt-2 text-center">Booking</a>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                            {% comment %} <div class="col-lg-4 col-sm-12  mt-4 action">
+                                <div class="card  card_offer text-center" style="width: 20rem;">
+                                    <img src="images/Alex.jpg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                    <h3 class="card-title">Alexandria</h3>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <h5>Price : <span class="text-decoration-line-through"> 1500 LE </span> 1000 LE </h5>
+                                    <a href="#" class="btn btn-primary mt-2 text-center">Booking</a>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                            {% comment %} <div class="col-lg-4 col-sm-12  mt-4 action">
+                                <div class="card  card_offer text-center" style="width: 20rem;">
+                                    <img src="images/Alex.jpg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                    <h3 class="card-title">Alexandria</h3>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <h5>Price : <span class="text-decoration-line-through"> 1500 LE </span> 1000 LE </h5>
+                                    <a href="#" class="btn btn-primary mt-2 text-center">Booking</a>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                            {% comment %} <div class="col-lg-4 col-sm-12  mt-4 action">
+                                <div class="card  card_offer text-center" style="width: 20rem;">
+                                    <img src="images/Alex.jpg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                    <h3 class="card-title">Alexandria</h3>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <h5>Price : <span class="text-decoration-line-through"> 1500 LE </span> 1000 LE </h5>
+                                    <a href="#" class="btn btn-primary mt-2 text-center">Booking</a>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                        {% comment %} </div>
+                    </div>
+                </div>
+            </div>
+        </section> {% endcomment %} 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- <section class="Footer">
+            <div class="row g-0">
+                <div class="col-lg-15 col-sm-12 ">
+                    <div class="carry">
+                        <p>© Copyright DevFolio. All Rights Reserved
+                            <br>  Designed by  <a href="#">BootstrapMade</a></p>
+                    </div>
+                </div>
+            </div>
+            
+        </section> -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>  
+    </body>
+</html>

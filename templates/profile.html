@@ -1,0 +1,110 @@
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/Profile.css' %}">
+    </head>
+    <body>
+        <div class="">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container">
+                    <div class="logo ">
+                        <div><a class="navbar-brand fs-4" href="{% url 'Home' %}"> <span class="text-info ">Tr</span>avel</a></div>
+                    </div>
+                    <div class="links">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item ">
+                                    <a class="nav-link active" aria-current="page" href="{% url 'Home' %}">Home</a>
+                                    <div class="link_home"></div>
+                                </li>
+                                <li class="nav-item sel_about">
+                                    <a class="nav-link " href="{% url 'Home' %}#2">About</a>
+                                    <div class="link_about"></div>
+                                </li>
+                                <li class="nav-item sel_services">
+                                    <a class="nav-link" href="{% url 'Home' %}#3">Explore</a>
+                                    <div class="link_services"></div>
+                                </li>
+                                <li class="nav-item sel_work">
+                                    <a class="nav-link" href="{% url 'Home' %}#4">Blog</a>
+                                    <div class="link_work"></div>
+                                </li>
+                                <li class="nav-item sel_work">
+                                    <a class="nav-link" href="{% url 'Home' %}#5">Offer</a>
+                                    <div class="link_work"></div>
+                                </li>
+                                <li class="nav-item sel_work">
+                                    <a class="nav-link" href="{% url 'booking_list' user.id %}">Bookings</a>
+                                    <div class="link_work"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            </nav>
+            <div class="container rounded "> 
+                <div class="row"> 
+                    <div class="col-md-12 border-right"> 
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-3">
+                            <img  style="border-radius: 50%; width: 25%;" src="{{prof.img.url}}">
+                        </div> 
+                    </div> 
+                    <div class="col-md-12 w-25 border-right d-flex justify-content-center align-items-center h-100 w-100 "> 
+                        <div class="form w-75">
+                            <div class="py-4"> 
+                                <div class="d-flex justify-content-between align-items-center mb-3"> 
+                                    <h4 class="text-right">Profile Settings</h4> 
+                                </div>
+                                <div class="row mt-2"> 
+                                    <div class="col-md-6">
+                             <form action="{% url 'profile' user.username %}" method="POST">
+                                 {% csrf_token %}
+                                    
+                                        <label class="labels">Frist name</label>
+                                        
+                                        <input type="text" name="firstName" class="form-control"  value="{{user.first_name}}"{% if change != 1 %} readonly  {% else %} {% endif %}>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="labels">Second name</label>
+                                        <input type="text" class="form-control"  name="lastName" value="{{user.last_name}}" {% if change != 1 %} readonly  {% else %} {% endif %}>
+                                    </div>
+                                </div> 
+                                <div class="row mt-3"> 
+                                    <div class="col-md-12">
+                                        <label class="labels">Email</label>
+                                        <input type="Email" class="form-control"  name="EMAIL" value="{{user.email}}" {% if change != 1 %} readonly  {% else %} {% endif %}>
+                                    </div> 
+                                </div>
+                                <div class="row mt-3"> 
+                                    <div class="col-md-12">
+                                        <label class="labels">Account Type</label>
+                                        <input type="text" class="form-control" name="VIP" value="{% if prof.vip %}PREMIUM{% else %}NORMAL{% endif %}" readonly>
+                                    </div> 
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="labels">Amount to pay</label>
+                                    <input type="text" class="form-control"  name="pay" value="{{prof.amount_to_pay}}" readonly>
+                                </div>
+                                <div class="mt-5 text-center">
+                                    {% if change != 1 %} <button class="btn btn-primary w-25 profile-button" name="UPDATE" type="submit">Update</button>{% else %} <button class="btn btn-primary w-25 profile-button" name="SAVE" type="submit">SAVE</button>{% endif %}
+                                </div> 
+                            </div> 
+                        </form>
+                        <form action="{% url 'Logout' %}" method="POST">
+                         {% csrf_token %}                          
+                           <div class="mt-5 text-left" >
+                            <button class="btn btn-primary w-25 profile-button" type="submit">Logout</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,46 @@
+{% load static %}
+{% load widget_tweaks %}
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/Register.css'%}">
+    </head>
+    <body>
+        <div class="login position-relative" style="background-image: url({% static 'images/banner.jpg' %});">
+            <div class="rgba position-absolute top-0 bottom-0 end-0 start-0" style="background-color:rgba(17, 20, 22, 0.8);">
+                <div class="container d-flex align-items-center justify-content-center vh-100">
+                    <div class="content">
+                        <form class="" action="{% url 'Register' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <h1 class="mb-4" > Register </h1>
+                            <div >
+                                <div>
+                                    <input type="text" name="username" id="username" class="form-control mx-2 w-75 mb-4 " placeholder="User Name"  />
+                                    <input type="text" name="FirstName" id="fristName" class="form-control mx-2 w-75 mb-4 " placeholder="Frist Name"  />
+                                    <input type="text" name="LastName" id="secendName" class="form-control mx-2 w-75 mb-4 " placeholder="Secend Name"  />
+                                </div>
+                                <div class="w-75 mb-4">
+                                    <input type="email" name="EMAIL" id="Email" class="form-control mx-2" placeholder="example@example.com" />
+                                </div>
+                                <div class="mb-4 w-75">
+                                    <input type="password" name="Password1" id="pass" class="form-control  mx-2 " placeholder="Password" />
+                                </div>
+                                <div class="mb-4 w-75">
+                                    <input type="password" name="Password2" id="repeatPass" class="form-control  mx-2 " placeholder="Repeat your password" />
+                                </div>
+                                <div class="mb-4">
+                                    {% render_field  form.vip class="mx-3" type="checkbox"%}
+                                    <label>Premium Account</label>
+                                    {% render_field  form.img class="mx-3" type="file"%}
+                                </div>
+                                <div class="text-center w-75 ">
+                                    <button type="submit" class="btn btn-outline-info">Register</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

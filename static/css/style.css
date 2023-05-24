@@ -1,0 +1,284 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    
+}
+
+/* Home page------------------------------------------------------------------------------------- */
+.Home_Page{
+        background-image:url(../img/1st-section.jpg);
+        background-position: center center;
+        background-size: cover;
+
+}
+.Home_Page .navgation{
+    background-color: rgba(79, 169, 185, 0.514) !important ;
+    z-index: 999;
+    width: 100%;
+}
+.logo{
+    width: 100%;
+}
+.logo a{
+    font-weight: 600;
+    color: #02faee !important;
+    font-size: 32px;
+    letter-spacing: 2px;
+}
+.logo span{
+    color: rgb(253, 253, 253);
+}
+
+.links{
+    margin-right: 50px;
+}
+.links li a{
+    color: white !important;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    margin-left: 7px;
+}
+
+.Home_Page .links .link_home{
+    width: 40px;
+    height: 2px;
+    background-color: white;
+    position: relative;
+    bottom: 5px;
+    left: 15px;
+}
+.link_about , .link_services , .link_work ,.link_blog , .link_down ,.link_contact {
+    width: 0px;
+    height: 2px;
+    background-color: white;
+    position: relative;
+    bottom: 5px;
+}
+.sel_about:hover .link_about{
+    width: 45px;
+    height: 2px;
+    background-color: white;
+    position: relative;
+    bottom: 5px;
+    left: 15px;
+    transition: 1s ;
+}
+.sel_services:hover .link_services{
+    width: 60px;
+    height: 2px;
+    background-color: white;
+    position: relative;
+    bottom: 5px;
+    left: 15px;
+    transition: 1s ;
+}
+.sel_work:hover .link_work{
+    width: 40px;
+    height: 2px;
+    background-color: white;
+    position: relative;
+    bottom: 5px;
+    left: 15px;
+    transition: 1s ;
+}
+.sel_blog:hover .link_blog{
+    width: 35px;
+    height: 200px;
+    background-color: white;
+    position: relative;
+    bottom: 5px;
+    left: 15px;
+    transition: 1s ;
+}
+.sel_down:hover .link_down{
+    width:90px;
+    height: 2px;
+    background-color: white;
+    position: relative;
+    bottom: 5px;
+    left: 15px;
+    transition: 1s ;
+}
+.sel_contact:hover .link_contact{
+    width: 60px;
+    height: 2px;
+    background-color: white;
+    position: relative;
+    bottom: 5px;
+    left: 15px;
+    transition: 1s ;
+}
+
+.Home_Page .content .text{
+    color: white;
+}
+.Home_Page .content .text h1{
+    font-weight: 800;
+    font-size: 60px;
+    letter-spacing: 15px;
+}
+.Home_Page .content .text span{
+    color: #02faee;
+}
+.Home_Page .content .text p{
+    color: white;
+    text-transform: capitalize;
+    font-size: 18px;
+    margin-bottom: 30px;
+    word-spacing: 3px;
+    letter-spacing: 1px;
+    padding: 25px 0px;
+}
+.Home_Page .form_color{
+    -webkit-box-shadow: -2px 0px 28px 5px rgba(0,0,0,0.75);
+    -moz-box-shadow: -2px 0px 28px 5px rgba(0,0,0,0.75);
+    box-shadow: -2px 0px 28px 5px rgba(0,0,0,0.75);
+    background-color: white;
+    margin-bottom: 3rem;
+}
+
+.login{
+    width:100px;
+}
+.login a{
+    text-decoration: none;
+    color: #02faee;
+    font-size: 22px;
+}
+.login .btn{
+    color: #02faee;
+    border-color: #02faee;
+}
+
+/* About page ------------------------------------------------------------------------------------------*/
+
+.About{
+    padding-top: 50px;
+    
+}
+.About .hd{
+    text-align: center;
+}
+.About .phr_about{
+    line-height: 2.5rem;
+    margin-top: 2.5rem;
+}
+.About .curous{
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+.About .curous img{
+    width: 600px !important;
+    height: 350px !important;
+
+}
+
+.line1
+{
+    background-color: #000000;
+    height: 2px;
+    width: 70px;
+    margin: auto;
+}
+.line2{
+    background-color: #000000;
+    height: 2px;
+    width: 160px;
+    margin: auto;
+    margin-top: 4px;
+    margin-bottom: 4px;
+
+}
+.line3
+
+{
+    background-color: #000000;
+    height: 2px;
+    width: 70px;
+    margin: auto;
+
+}
+
+/*  page ------------------------------------------------------------------------------------------*/
+
+.Explore{
+    background-image:  linear-gradient(360deg, rgb(233, 233, 233), rgba(39, 167, 190, 0.651));
+}
+.Explore .text h5{
+    margin-bottom: 40px;
+    font-weight: bold;
+
+}
+.Explore .text p{
+    line-height: 2.5rem;
+}
+
+
+
+
+.blog .card{
+    height: 90%;
+    transition: all 1s;
+    overflow: hidden;
+}
+
+.card_action:hover .card{
+    transform: scale(.9);
+}
+.card img{
+    height: 200px;
+}
+.blog a{
+    text-decoration: none;
+    position: absolute;
+    bottom: 0px;
+}
+.video{
+    width: 600px;
+    height: 350px;
+}
+
+
+
+
+
+.offer{
+    background-image:  linear-gradient(360deg, rgb(233, 233, 233), rgba(39, 167, 190, 0.651));
+
+}
+.card_offer{
+    transition: all 2s;
+}
+
+.action:hover .card_offer{
+    transform: scale(1.1);
+    background-image:  linear-gradient(360deg, rgb(233, 233, 233), rgba(39, 167, 190, 0.651));
+}
+
+
+
+
+
+
+/* page end */
+
+.end 
+{
+    background: #333333 none repeat scroll 0 0;
+    text-align: center;
+    padding: 20px 0px;
+    margin-top: 30px;
+}
+.end p
+{
+    color: #ffffff;
+    margin-top: 10px;
+}
+
+
+
+
+

@@ -1,0 +1,133 @@
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/Cart.css' %}">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light navgation">
+            <div class="container">
+                <div class="logo ">
+                    <div><a class="navbar-brand" href="{% url 'Home' %}"> <span>Tr</span>avel</a></div>
+                    <div><button class="navbar-toggler down" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="collapse navbar-collapse links" id="navbarSupportedContent">
+                    <div class="cont_links">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <div>
+                        
+                    </div>
+                    <li class="nav-item ">
+                        <a class="nav-link active" aria-current="page" href="{% url 'Home' %}">Home</a>
+                        <div class="link_home"></div>
+                    </li>
+                    <li class="nav-item sel_about">
+                        <a class="nav-link " href="{% url 'Home' %}#2">About</a>
+                        <div class="link_about"></div>
+                    </li>
+                    <li class="nav-item sel_services">
+                        <a class="nav-link" href="{% url 'Home' %}#3">Explore</a>
+                        <div class="link_services"></div>
+                    </li>
+                    <li class="nav-item sel_work">
+                        <a class="nav-link" href="{% url 'Home' %}#4">Blog</a>
+                        <div class="link_work"></div>
+                    </li>
+                    </ul>
+                    </div>
+                </div>
+                
+            </div>
+            {% if user.is_authenticated %}
+            <div class="login ">
+                
+                <a class="login" href="{% url 'profile' user.username %}"><button type="button" class="btn btn-outline-info">{{user.username}}</button></a>
+            </div>
+        
+            {% else %}
+            <div class="login ">
+                
+                <a class="login" href="{% url 'Login' %}"><button type="button" class="btn btn-outline-info">Login in</button></a>
+            </div>
+            {% endif %}
+        </nav>
+
+
+
+
+
+        <div class="container">                
+            <div class="card ">
+                <div class="card-header">
+                    <h4 class="card-title">Booking List</h4>
+                </div>
+                <div class="card-body">
+                    <div class="cart-container">
+                        <table class="table table-borderless table-striped">
+                            <thead>
+                                <h4>Flights</h4>
+                                <tr>
+                                    <th scope="col">Number</th>
+                                    <th scope="col" class="ps-5">Action</th>                                               
+                                    <th scope="col">Ticket Info</th>
+                                    <th scope="col">Price</th>
+                                </tr>
+                            </thead>
+                            {% for ticket in flights%}
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="ps-4">{{forloop.counter}}</th>
+                                    <td>
+                                        <form action="{% url 'booking_list' user.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button class="btn btn-info"><a href="#"class="text-black text text-decoration-none">Uodate</a></button>
+                                        <button class="btn btn-info" type="submit" name="Dflight" value="{{ticket.id}}"><a class="text-black text text-decoration-none">Delete</a></button>
+                                        </form>
+                                    </td>                                            
+                                    <td>{{ticket}}</td>
+                                    <td>${{ticket.Flight_Info.Price}}</td>
+                                </tr>
+                                
+                            </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="cart-container">
+                        <table class="table table-borderless table-striped">
+                            <thead>
+                                <h4>Rooms</h4>
+                                <tr>
+                                    <th scope="col">Number</th>
+                                    <th scope="col" class="ps-5">Action</th>                                               
+                                    <th scope="col">Room Details</th>
+                                    <th scope="col">Price</th>
+                                </tr>
+                            </thead>
+                            {% for room in rooms  %}
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="ps-4">{{forloop.counter}}</th>
+                                 <td>
+                                     <form action="{% url 'booking_list' user.id %}" method="POST">
+                                         {% csrf_token %}
+                                        <button class="btn btn-info"><a href="#"class="text-black text text-decoration-none">Update</a></button>
+                                        <button class="btn btn-info" type="submit" name="Droom" value="{{room.id}}"><a class="text-black text text-decoration-none">Delete</a></button>
+                                    </form>
+                                 </td>                                            
+                                    <td>{{room}}</td>
+                                    <td>${{room.Room.price}}</td>
+                                </tr>
+                               
+                            </tbody>
+                            {% endfor %}
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

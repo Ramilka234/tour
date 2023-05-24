@@ -1,0 +1,23 @@
+# Django-related files and directories
+*.pyc
+*.pyo
+__pycache__/
+*.egg-info/
+dist/
+build/
+media/
+
+# Local development settings
+settings_local.py
+
+# Database
+db.sqlite3
+
+# Static files (generated during development)
+staticfiles/
+
+# Secret keys and sensitive information
+secret_key.txt
+
+# Virtual environment
+venv/
