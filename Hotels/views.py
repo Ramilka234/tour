@@ -4,70 +4,44 @@ from datetime import datetime
 from .forms import ReserveForm
 from .models import Reserve_Room, Room
 from UserAccount.models import Profile
-# Create your views here.
-
+from datetime import timedelta
 
 def booking(request, rtype, x=0):
     form = ReserveForm(request.POST)
-
-    form.fields['Room'].queryset = Room.objects.filter(Rcategory=rtype)#single
+    form.fields['Room'].queryset = Room.objects.filter(Rcategory=rtype)
 
     if request.method == 'POST':
-
         if form.is_valid():
-            form_checkIn = datetime.strptime(
-                form['Rcheck_in'].value(), "%Y-%m-%dT%H:%M")
-
-            form_checkOut = datetime.strptime(
-                form['Rcheck_out'].value(), "%Y-%m-%dT%H:%M")
-
+            form_checkIn = datetime.strptime(form['Rcheck_in'].value(), "%Y-%m-%dT%H:%M")
+            form_checkOut = datetime.strptime(form['Rcheck_out'].value(), "%Y-%m-%dT%H:%M")
             Croom = form['Room'].value()
-
             customer = Profile.objects.get(user_id=request.user.id)
-
-            money = Room.objects.get(pk=Croom)
-
-            room = Reserve_Room.objects.filter(Room=Croom)
+            room_price = Room.objects.get(pk=Croom).price
 
             if form_checkIn < form_checkOut:
+                # Вычисляем количество дней проживания
+                days_stayed = (form_checkOut - form_checkIn).days
 
-                if len(room) <= 0:
-                    form.instance.user = request.user
-                    form.save()
-                    if customer.vip:
-                        customer.amount_to_pay += money.price * (1 - 0.1)
-                        customer.save()
-                    else:
-                    
-                        customer.amount_to_pay += money.price
-                        customer.save()
-                    return redirect('Home')
+                # Вычисляем стоимость проживания за каждый день
+                total_room_price = room_price * days_stayed
 
-                good = 1
+                # Сохраняем бронирование номера
+                form.instance.user = request.user
+                form.save()
 
-                for book in room:
+                # Добавляем стоимость проживания за каждый день к общей сумме к оплате
+                if customer.vip:
+                    customer.amount_to_pay += total_room_price * (1 - 0.1)
+                else:
+                    customer.amount_to_pay += total_room_price
+                customer.save()
 
-                    if book.Rcheck_in > form_checkOut or book.Rcheck_out < form_checkIn:
-                        pass
-                    else:
-                        good = 0
-                        return HttpResponse("not avalible")
-                if good == 1:
-                    form.instance.user = request.user
-                    form.save()
-                    if customer.vip:
-                        customer.amount_to_pay += money.price * (1 - 0.1)
-                        customer.save()
-                    else:
-                    
-                        customer.amount_to_pay += money.price
-                        customer.save()
-
-                    x = 0
-                    return HttpResponse("u r booked")
+                return redirect('Home')
 
             else:
-                print("Enter vaild time period")
-    if(x == 1):
+                print("Enter valid time period")
+
+    if x == 1:
         return form
+
     return render(request, 'index.html', {'form': form, 'rtype': rtype})

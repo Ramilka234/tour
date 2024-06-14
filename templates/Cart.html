@@ -1,3 +1,4 @@
+
 {% load static %}
 <html>
     <head>
@@ -17,80 +18,68 @@
                 <div class="collapse navbar-collapse links" id="navbarSupportedContent">
                     <div class="cont_links">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <div>
-                        
-                    </div>
-                    <li class="nav-item ">
-                        <a class="nav-link active" aria-current="page" href="{% url 'Home' %}">Home</a>
-                        <div class="link_home"></div>
-                    </li>
-                    <li class="nav-item sel_about">
-                        <a class="nav-link " href="{% url 'Home' %}#2">About</a>
-                        <div class="link_about"></div>
-                    </li>
-                    <li class="nav-item sel_services">
-                        <a class="nav-link" href="{% url 'Home' %}#3">Explore</a>
-                        <div class="link_services"></div>
-                    </li>
-                    <li class="nav-item sel_work">
-                        <a class="nav-link" href="{% url 'Home' %}#4">Blog</a>
-                        <div class="link_work"></div>
-                    </li>
-                    </ul>
+                            <div></div>
+                            <li class="nav-item ">
+                                <a class="nav-link active" aria-current="page" href="{% url 'Home' %}">Главная</a>
+                                <div class="link_home"></div>
+                            </li>
+                            <li class="nav-item sel_about">
+                                <a class="nav-link " href="{% url 'Home' %}#2">О нас</a>
+                                <div class="link_about"></div>
+                            </li>
+                            <li class="nav-item sel_services">
+                                <a class="nav-link" href="{% url 'Home' %}#3">Исследовать</a>
+                                <div class="link_services"></div>
+                            </li>
+                            <li class="nav-item sel_work">
+                                <a class="nav-link" href="{% url 'Home' %}#4">Блог</a>
+                                <div class="link_work"></div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                
             </div>
             {% if user.is_authenticated %}
             <div class="login ">
-                
                 <a class="login" href="{% url 'profile' user.username %}"><button type="button" class="btn btn-outline-info">{{user.username}}</button></a>
             </div>
-        
             {% else %}
             <div class="login ">
-                
-                <a class="login" href="{% url 'Login' %}"><button type="button" class="btn btn-outline-info">Login in</button></a>
+                <a class="login" href="{% url 'Login' %}"><button type="button" class="btn btn-outline-info">Войти</button></a>
             </div>
             {% endif %}
         </nav>
-
-
-
-
-
+        
         <div class="container">                
             <div class="card ">
                 <div class="card-header">
-                    <h4 class="card-title">Booking List</h4>
+                    <h4 class="card-title">Список бронирований</h4>
                 </div>
                 <div class="card-body">
                     <div class="cart-container">
                         <table class="table table-borderless table-striped">
                             <thead>
-                                <h4>Flights</h4>
+                                <h4>Номера</h4>
                                 <tr>
-                                    <th scope="col">Number</th>
-                                    <th scope="col" class="ps-5">Action</th>                                               
-                                    <th scope="col">Ticket Info</th>
-                                    <th scope="col">Price</th>
+                                    <th scope="col">Номер</th>
+                                    <th scope="col" class="ps-5">Действие</th>                                               
+                                    <th scope="col">Детали номера</th>
+                                    <th scope="col">Цена</th>
                                 </tr>
                             </thead>
-                            {% for ticket in flights%}
+                            {% for room in rooms %}
                             <tbody>
                                 <tr>
-                                    <th scope="row" class="ps-4">{{forloop.counter}}</th>
+                                    <th scope="row" class="ps-4">{{ forloop.counter }}</th>
                                     <td>
                                         <form action="{% url 'booking_list' user.id %}" method="POST">
-                                        {% csrf_token %}
-                                        <button class="btn btn-info"><a href="#"class="text-black text text-decoration-none">Uodate</a></button>
-                                        <button class="btn btn-info" type="submit" name="Dflight" value="{{ticket.id}}"><a class="text-black text text-decoration-none">Delete</a></button>
+                                            {% csrf_token %}
+                                            <button class="btn btn-info" type="submit" name="Droom" value="{{ room.id }}"><a class="text-black text text-decoration-none">Удалить</a></button>
                                         </form>
                                     </td>                                            
-                                    <td>{{ticket}}</td>
-                                    <td>${{ticket.Flight_Info.Price}}</td>
+                                    <td>{{ room }}</td>
+                                    <td>${{ room.Room.price }}</td>
                                 </tr>
-                                
                             </tbody>
                             {% endfor %}
                         </table>
@@ -98,33 +87,30 @@
                     <div class="cart-container">
                         <table class="table table-borderless table-striped">
                             <thead>
-                                <h4>Rooms</h4>
+                                <h4>Туры</h4>
                                 <tr>
-                                    <th scope="col">Number</th>
-                                    <th scope="col" class="ps-5">Action</th>                                               
-                                    <th scope="col">Room Details</th>
-                                    <th scope="col">Price</th>
+                                    <th scope="col">Номер</th>
+                                    <th scope="col" class="ps-5">Действие</th>
+                                    <th scope="col">Детали предложения</th>
+                                    <th scope="col">Цена</th>
                                 </tr>
                             </thead>
-                            {% for room in rooms  %}
+                            {% for offer in offers %}
                             <tbody>
                                 <tr>
-                                    <th scope="row" class="ps-4">{{forloop.counter}}</th>
-                                 <td>
-                                     <form action="{% url 'booking_list' user.id %}" method="POST">
-                                         {% csrf_token %}
-                                        <button class="btn btn-info"><a href="#"class="text-black text text-decoration-none">Update</a></button>
-                                        <button class="btn btn-info" type="submit" name="Droom" value="{{room.id}}"><a class="text-black text text-decoration-none">Delete</a></button>
-                                    </form>
-                                 </td>                                            
-                                    <td>{{room}}</td>
-                                    <td>${{room.Room.price}}</td>
+                                    <th scope="row" class="ps-4">{{ forloop.counter }}</th>
+                                    <td>
+                                        <form action="{% url 'booking_list' user.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <button class="btn btn-info" type="submit" name="Doffer" value="{{ offer.id }}"><a class="text-black text text-decoration-none">Удалить</a></button>
+                                        </form>
+                                    </td>
+                                    <td>{{ offer }}</td>
+                                    <td>${{ offer.offer.new_price }}</td>
                                 </tr>
-                               
                             </tbody>
                             {% endfor %}
                         </table>
-
                     </div>
                 </div>
             </div>

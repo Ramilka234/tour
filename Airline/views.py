@@ -1,8 +1,9 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import FlightForm
-from .models import Flights
+from .models import Flights, Offer, Booking
 from UserAccount.models import Profile
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -44,3 +45,5 @@ def flight_booking(request, det_from, det_to, y=0):
     if(y == 1):
         return F_form
     return render(request, 'index.html', {'Fform': F_form, 'det_from': det_from, 'det_to': det_to})
+
+

@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import ProfileForm
@@ -7,7 +7,9 @@ from django.contrib.auth import authenticate, login, logout
 from Hotels.views import booking
 from Airline.views import flight_booking
 from Hotels.models import Reserve_Room, Room
-from Airline.models import Flight_Reserve, Flights
+from Airline.models import Flight_Reserve, Flights, Offer, Booking
+
+
 # Create your views here.
 
 
@@ -18,6 +20,13 @@ def index(request):
     prof = "False"
     if request.user.id is not None:
         prof = Profile.objects.get(user_id=request.user)
+
+    if request.method == 'POST':
+        offer_id = request.POST.get('offer_id')
+        if offer_id:
+            offer = get_object_or_404(Offer, id=offer_id)
+            Booking.objects.create(user=request.user, offer=offer)
+            return redirect('booking_list', ID=request.user.id)
 
     if 'Hotels' in request.GET:
         if rtype is not None:
@@ -30,7 +39,11 @@ def index(request):
             if det_from != 'None':
                 Fform = flight_booking(request, det_from, det_to, 1)
                 return redirect('flight', det_from, det_to)
-    return render(request, 'index.html', {'rtype': rtype, 'det_to': det_to, 'det_from': det_from, 'profile': prof})
+    offers = Offer.objects.filter(available=True)
+
+    return render(request, 'index.html', {'rtype': rtype, 'det_to': det_to, 'det_from': det_from, 'profile': prof, 'offers': offers})
+
+
 
 
 def Login(request):
@@ -114,31 +127,55 @@ def profile(request, username):
 def booking_list(request, ID):
     flights = Flight_Reserve.objects.filter(user_id=ID)
     rooms = Reserve_Room.objects.filter(user_id=ID)
-
+    offers = Booking.objects.filter(user_id=ID)
+    num_days = 0
     customer = Profile.objects.get(user_id=ID)
+    for room in rooms:
+        num_days = (room.Rcheck_out - room.Rcheck_in).days
+        room.Room.price *= num_days  # Обновление стоимости на основе количества дней
+        room.save()
+        customer.amount_to_pay = 0
+        customer.amount_to_pay -= room.Room.price
+
     if request.method == 'POST':
         if 'Droom' in request.POST:
+            # Fetch the room reservation object to be deleted
             DRoom = Reserve_Room.objects.get(id=request.POST['Droom'])
+
+            # Update the customer's amount to pay based on the room price
             if customer.vip:
-                customer.amount_to_pay -= DRoom.Room.price * (1- 0.1)
+                customer.amount_to_pay -= DRoom.Room.price * (1 - 0.1)  # Apply discount for VIP customers
             else:
                 customer.amount_to_pay -= DRoom.Room.price
+
+            # Save the updated customer data
             customer.save()
+
+            # Delete the room reservation object
             DRoom.delete()
 
         if 'Dflight' in request.POST:
             DFlight = Flight_Reserve.objects.get(id=request.POST['Dflight'])
             Flight = Flights.objects.get(id=DFlight.Flight_Info.id)
             if customer.vip:
-                customer.amount_to_pay -= (DFlight.Flight_Info.Price + flights.tickets) * (1- 0.1)
+                customer.amount_to_pay -= (DFlight.Flight_Info.Price + DFlight.tickets) * (1 - 0.1)
                 customer.save()
             else:
-                customer.amount_to_pay -= DFlight.Flight_Info.Price + flights.tickets
+                customer.amount_to_pay -= DFlight.Flight_Info.Price + DFlight.tickets
                 customer.save()
             Flight.Capacity += DFlight.tickets
             Flight.save()
             DFlight.delete()
 
-    return render(request, 'Cart.html', {'rooms': rooms, 'flights': flights})
+        if 'Doffer' in request.POST:  # Логика удаления предложения
+            DOffer = Booking.objects.get(id=request.POST['Doffer'])
+            if customer.vip:
+                customer.amount_to_pay -= DOffer.offer.new_price * (1 - 0.1)
+            else:
+                customer.amount_to_pay -= DOffer.offer.new_price
+            customer.save()
+            DOffer.delete()
+
+    return render(request, 'Cart.html', {'rooms': rooms, 'flights': flights, 'offers': offers})
 
 
